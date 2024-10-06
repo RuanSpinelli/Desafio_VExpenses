@@ -115,3 +115,39 @@ df_diretor_ator_exibir = df_diretor_ator[["title", "director", "cast"]]
 print(f"\nDESAFIO 4\n{df_diretor_ator_exibir}")
 
 
+"""
+    Desafio 5
+
+    explorar!
+"""
+
+
+
+# Contar a quantidade de cada tipo (Movie e TV Show)
+total = df['type'].value_counts()
+
+print(f"\nTotal de cada tipo de mídia: \n{total}")
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+#calculando a quantia de obras por ano
+obras_por_ano = df['release_year'].value_counts().sort_index()
+
+#Calcular a média de obras por ano
+media_obras_por_ano = obras_por_ano.mean()
+
+#mostrando na tela a média de obras feitas por ano
+print(f"\nA média de obras por ano: \n{media_obras_por_ano:.2f}")
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+#criando um dataframe aonde apenas vai guardar os dados de obras que são filmes
+df_filmes = df[df["type"] == "Movie"]
+
+#vai converter os dados de "duration" de str para int
+df_filmes["duration"] = df_filmes['duration'].str.replace(" min", '').astype(int)
+
+
+#calcula a média da duração
+duracao_media = df_filmes['duration'].mean()
+
+#mostra isso na tela 
+print(f'A duração média dos filmes é: {duracao_media:.2f} minutos')
