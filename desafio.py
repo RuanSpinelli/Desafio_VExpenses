@@ -1,6 +1,6 @@
 #importando a biblioteca pandas para fazer as analises de dados
 import pandas as pd
-
+import matplotlib.pyplot as plt
 
 #criando um dataframe com base no arquivo csv enviado para fazer o desafio
 df = pd.read_csv("netflix_titles.csv")
@@ -142,6 +142,9 @@ print(f"\nA média de obras por ano: \n{media_obras_por_ano:.2f}")
 #criando um dataframe aonde apenas vai guardar os dados de obras que são filmes
 df_filmes = df[df["type"] == "Movie"]
 
+#filtra apenas as linhas aonde a duração possuim algum conteúdo válido
+df_filmes = df_filmes.dropna(subset=['duration'])
+
 #vai converter os dados de "duration" de str para int
 df_filmes["duration"] = df_filmes['duration'].str.replace(" min", '').astype(int)
 
@@ -151,3 +154,43 @@ duracao_media = df_filmes['duration'].mean()
 
 #mostra isso na tela 
 print(f'A duração média dos filmes é: {duracao_media:.2f} minutos')
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+top_paises = df['country'].value_counts().head(5)
+print(f"\nOs 5 países com mais produções na Netflix: \n{top_paises}")
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+ratings_count = df['rating'].value_counts()
+#sem o head, ele acaba puxando marcações de tempo por acidente
+print(f"\nDistribuição de ratings: \n{ratings_count.head(14)}")
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# Criar uma nova coluna que exploda os gêneros
+genres_exploded = df['listed_in'].str.split(', ').explode()
+top_genres = genres_exploded.value_counts().head(5)
+print(f"\nOs 5 gêneros mais comuns: \n{top_genres}")
+
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# Contando os lançamentos por ano
+lancamentos_por_ano = df['release_year'].value_counts().sort_index()
+
+# Criando o gráfico de barras
+lancamentos_por_ano.plot(kind='bar', title='Lançamentos por Ano')
+
+# Adicionando rótulos aos eixos
+plt.title('Lançamentos por Ano')
+plt.xlabel('Ano')
+plt.ylabel('Número de Lançamentos')
+
+
+
+# Adicionando espaço entre as barras
+plt.xticks(rotation=45)  # Para melhor visualização dos rótulos do eixo X
+plt.tight_layout()  # Ajusta o layout para evitar sobreposição
+
+
+# Exibindo o gráfico
+plt.show()
