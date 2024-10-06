@@ -90,3 +90,28 @@ Jay Karas                 14
 dtype: int64
 """
 
+
+"""
+    Desafio 4.
+    Quais diretores também atuaram como atores em suas próprias produções?
+"""
+
+#filtrando as colunas de diretor e elenco, para garantir que apenas serão considerados dados relevantes para a 
+#análise
+df_validos = df.dropna(subset=["director","cast"])
+
+#fazendo uma função para checar quais diretores também estão no elenco das produções
+def diretor_atuou(row):
+    #Vefirica se o nome do diretor aparece na lista de atores
+    return any(diretor in row["cast"] for diretor in row['director'].split(', '))
+
+
+#aplicando a função para checar quais diretores também estão entre os atores em suas produções
+df_diretor_ator = df_validos[df_validos.apply(diretor_atuou, axis=1)]
+
+df_diretor_ator_exibir = df_diretor_ator[["title", "director", "cast"]]
+
+#Exibir os diretores que também atuaram atores em suas próprias produções
+print(f"\nDESAFIO 4\n{df_diretor_ator_exibir}")
+
+
