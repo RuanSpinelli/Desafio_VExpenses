@@ -34,9 +34,6 @@ print(f'DESAFIO 1\nAs colunas presentes no dataframe "netflix_titles.csv": \n{df
 df_filmes_netflix = df[(df["type"] == "Movie")]
 
 
-# Verificar se há valores ausentes na coluna "type"
-#print(df['type'].isnull().sum())
-
 
 #selecionando a coluna "type" do dataframe filtrado apenas com os filmes, e contando quantas linhas retornará
 contagem_filmes = df_filmes_netflix.groupby("type").size()
